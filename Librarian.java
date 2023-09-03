@@ -31,13 +31,13 @@ class Book{ // implementation of books (can make a separate file if needed.)
         this.name = Name;
         this.author = Author; 
         this.id = Id;
-        copies += copy;
+        copies = copy;
     }
 
 
     public String toString(){
         // no need to add copies in this toString method
-        return String.format("Id: "+ this.getId() + "\nName: " + this.getName() + "\nAuthor: "+ this.getAuthor() +"\n");
+        return String.format("Id: "+ this.getId() + "\nName: " + this.getName() + "\nAuthor: "+ this.getAuthor());// +"\n Copies: " +this.getCopies());
     }
 }
 
@@ -75,6 +75,8 @@ class methods{
 
     public void addbook(String name, String author, Integer id, Integer copies, List<Book> Books){
         Books.add(new Book(name , author , id , copies));
+        System.out.println("Printing book details: ");
+        System.out.println(Books.toString());
     }
 
     public void removebook(String name, String author, List<Book> Books){
@@ -83,9 +85,15 @@ class methods{
         while (iterator.hasNext()) {
             Book b1 = iterator.next();
             if (b1.getName().equals(name) && b1.getAuthor().equals(author)) {
-                iterator.remove();
-                System.out.println("Book removed successfuly: "+ name + " " + author);
-                found = true;
+                if(b1.getCopies() ==1){
+                    iterator.remove();
+                    System.out.println("Book removed successfuly: "+ name + " " + author);
+                    found = true;
+                }
+                else{
+                    Integer count = b1.getCopies();
+                    b1.setCopies(count-1);
+                }
             }
         }
         if(!found){
@@ -161,6 +169,7 @@ public class Librarian extends methods{
                     String author_a = scanf.nextLine();
                     System.out.print("Number of copies: ");
                     Integer copies = scanf.nextInt();
+                    scanf.nextLine();
                     System.out.println("-------------------");
                   
                     System.out.println("Book added successfuly!");
@@ -184,6 +193,8 @@ public class Librarian extends methods{
                     break;
                 case 5:
                     System.out.println("viewing all members with books and fines");
+                    System.out.println("-------------------");
+                    
                     Library.members.forEach((m)->System.out.println(m.toString()));
                     break;
                 case 6:
